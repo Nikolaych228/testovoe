@@ -5,31 +5,34 @@ const generateRandomData = (length = 10, interval = "day") => {
     for (let i = 0; i < length; i++) {
       let date;
       if (interval === "hour") {
-        // Для hourly данных (24h)
-        date = new Date(now.getTime() - i * 60 * 60 * 1000); // Каждый час
+        date = new Date(now.getTime() - i * 60 * 60 * 1000); 
       } else {
-        // Для daily данных (7d, 30d, all_time)
-        date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000); // Каждый день
+        date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000); 
       }
       data.push({
-        date: date.toISOString(), // ISO строка для хранения
-        uv: Math.floor(Math.random() * 98) + 60, // Случайное значение от 0 до 100
+        date: date.toISOString(),
+        uv: Math.floor(Math.random() * 98) + 60, 
       });
     }
-  
-    return data.reverse(); // Чтобы данные шли от старых к новым
+    return data.reverse(); 
   };
-export  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const options = { hour: "2-digit", minute: "2-digit" }; // Формат времени HH:mm
+
+export const formatDate = (dateString, period) => {
+  const date = new Date(dateString);
+  if (period === "24h") {
+    const options = { hour: "2-digit", minute: "2-digit" };
     return date.toLocaleTimeString("en-US", options);
-  };
+  } else {
+    return date.toISOString().split("T")[0];
+  }
+};
+
 export const botDate = {
     yellow_bot: {
-      "24h": generateRandomData(24, "hour"), // 24 часа данных (каждый час)
-      "7d": generateRandomData(7, "day"), // 7 дней данных
-      "30d": generateRandomData(30, "day"), // 30 дней данных
-      all_time: generateRandomData(60, "day"), // Все данные (60 дней)
+      "24h": generateRandomData(24, "hour"), 
+      "7d": generateRandomData(7, "day"), 
+      "30d": generateRandomData(30, "day"), 
+      all_time: generateRandomData(60, "day"), 
     },
     white_bot: {
       "24h": generateRandomData(24, "hour"),
